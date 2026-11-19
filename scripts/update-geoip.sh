@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Fetch DB-IP's free IP-to-Country Lite database (CC BY 4.0, attribution on /privacy).
-# Runs monthly from apache's crontab on web2. The app reloads the file when it changes.
+# Run it monthly (e.g. from cron as the app's user). The app reloads the file when it changes.
 set -euo pipefail
 dest_dir="$(dirname "$0")/../data"
 mkdir -p "$dest_dir"

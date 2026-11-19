@@ -168,3 +168,4 @@ code.token { display: block; padding: 12px; border-radius: 8px; background: var(
   .list .meta { text-align: left; }
 }
 .grid2 > .card > b:first-child { display: block; margin-bottom: 8px; }
+.grid2 > .card + .card { margin-top: 0; }
