@@ -36,7 +36,7 @@ Local repo → commit → push → on web2:
 
 ```bash
 sudo -u apache git -C /var/www/html/clams pull
-sudo -u apache bash -c 'cd /var/www/html/clams && /home/david/.local/bin/uv sync --frozen --no-dev && .venv/bin/clams-admin migrate'
+sudo -u apache bash -c 'cd /var/www/html/clams && UV_CACHE_DIR=/var/cache/uv UV_PYTHON_DOWNLOADS=never /usr/local/bin/uv sync --frozen --no-dev --python /usr/bin/python3.12 && .venv/bin/clams-admin migrate'
 sudo systemctl restart clams
 ```
 
