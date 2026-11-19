@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Connect the extension — Clams{% endblock %}
+{% block content %}
+<div class="narrow center">
+  <div id="step-working" data-step>
+    <div class="big-emoji">🐚</div>
+    <h1>Connecting…</h1>
+    <p class="lead">Linking the Clams extension to {{ user.email }}.</p>
+  </div>
+  <div id="step-done" data-step class="hidden">
+    <div class="big-emoji">✅</div>
+    <h1>You're connected!</h1>
+    <p class="lead">New Clams from the extension now save to your account. <span id="claimed"></span></p>
+    <p class="muted">You can close this tab.</p>
+  </div>
+  <div id="step-missing" data-step class="hidden">
+    <div class="big-emoji">🧩</div>
+    <h1>We can't see the extension</h1>
+    <p class="lead">Install the Clams extension in this browser, then click “Sign in” from it again.</p>
+    <a class="btn" href="/extension">Get the extension</a>
+  </div>
+  <div id="step-error" data-step class="hidden">
+    <div class="big-emoji">🌊</div>
+    <h1>That didn't work</h1>
+    <p class="lead">Refresh this page to try again.</p>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}<script src="/static/connect.js?v=1"></script>{% endblock %}

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Clams</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header>
+    <img src="icons/icon-32.png" alt="" width="22" height="22">
+    <b>Clams</b>
+    <a id="open-site" href="https://cla.ms/links" target="_blank">My Clams</a>
+  </header>
+
+  <section id="working">
+    <p class="muted">Shucking a Clam… 🐚</p>
+  </section>
+
+  <section id="result" hidden>
+    <div class="short-row">
+      <input id="short" readonly aria-label="Short link">
+      <button id="copy" class="btn">Copy</button>
+    </div>
+    <p id="copied" class="ok">Copied to your clipboard ✓</p>
+    <p id="dest" class="dest"></p>
+    <p id="saved" class="saved" hidden>Saved to your account. <a id="stats" href="#" target="_blank">See stats →</a></p>
+  </section>
+
+  <p id="signedout" class="muted" hidden>Signed out. New Clams won't be saved to an account until you sign in again. <button id="signin2" class="link">Sign in</button></p>
+
+  <section id="nudge" class="nudge" hidden>
+    <b>Want to keep this one?</b>
+    <p>Your Clam works now and will keep working. Create a free account and we'll save it for you, so you can edit it or see who clicked later. If you skip it, that's totally fine — you just won't be able to change it down the road.</p>
+    <div class="actions">
+      <button id="signup" class="btn">Create free account</button>
+      <button id="signin" class="btn ghost">Sign in</button>
+    </div>
+  </section>
+
+  <section id="error" hidden>
+    <p id="error-text" class="err"></p>
+  </section>
+
+  <footer id="account" hidden>
+    <span id="who"></span> · <button id="signout" class="link">Sign out</button>
+  </footer>
+
+  <script src="shared.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

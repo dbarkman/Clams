@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}About — Clams{% endblock %}
+{% block content %}
+<div class="prose">
+<h1>About Clams 🐚</h1>
+<p class="lead">Clams is a small, friendly link shortener. A short link on cla.ms is called a Clam — because, well, why not?</p>
+<h2>What you get</h2>
+<ul>
+  <li>Short links like <b>{{ settings.short_host }}/aB3xY9</b>. Codes are case-sensitive, so copy and paste them rather than retyping.</li>
+  <li>No account needed. With a free account you can edit where a Clam goes, switch it off, pick custom names, and see click stats.</li>
+  <li>Click stats: clicks over time, unique visitors, referrers, countries, devices and browsers. Link-preview bots aren't counted.</li>
+  <li>A QR code for every Clam, a one-click browser extension, CSV export, and a simple API.</li>
+  <li>Add a <b>+</b> to the end of any Clam (like <b>{{ settings.short_host }}/aB3xY9+</b>) to see where it goes before you visit.</li>
+</ul>
+<h2>What we don't do</h2>
+<p>No ads, no interstitial pages, no selling your data, and Clams don't expire.</p>
+</div>
+{% endblock %}

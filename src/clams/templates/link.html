@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}{{ display_short(link.code) }} — Clams{% endblock %}
+{% block content %}
+<p class="small" style="margin-top:16px"><a href="/links">← My Clams</a></p>
+<div class="card">
+  <div class="result">
+    <a class="short" href="{{ short_url(link.code) }}">{{ display_short(link.code) }}</a>
+    <button class="btn" data-copy="{{ short_url(link.code) }}">Copy</button>
+    {% if link.disabled_at %}<span class="pill">off</span>{% endif %}
+  </div>
+  {% if link.title %}<div style="margin-top:6px"><b>{{ link.title }}</b></div>{% endif %}
+  <div class="dest">→ <a href="{{ link.url }}" rel="noopener noreferrer">{{ link.url }}</a></div>
+  <div class="small muted" style="margin-top:6px">Created {{ link.created_at.strftime('%b %-d, %Y') }}{% if link.source != 'web' %} from the {{ link.source }}{% endif %}{% if link.last_clicked_at %} · last click {{ link.last_clicked_at.strftime('%b %-d, %Y %H:%M') }} UTC{% endif %}</div>
+</div>
+
+<div class="toolbar" style="margin-top:22px">
+  <h2 style="margin:0;flex:1">Clicks</h2>
+  <div class="ranges">
+    {% for key, label in [('7d','7 days'),('30d','30 days'),('90d','90 days'),('all','All time')] %}
+      <a class="{{ 'on' if stats.range == key else '' }}" href="/links/{{ link.code }}?range={{ key }}">{{ label }}</a>
+    {% endfor %}
+  </div>
+</div>
+<div class="kpis">
+  <div class="kpi"><b>{{ stats.total }}</b><span>clicks</span></div>
+  <div class="kpi"><b>{{ stats.unique }}</b><span>unique visitors</span></div>
+  <div class="kpi"><b>{{ link.click_count }}</b><span>all-time clicks</span></div>
+</div>
+<div class="card" style="margin-top:12px">
+  <svg class="chart" viewBox="-24 0 648 182" role="img" aria-label="Clicks per day">
+    <line x1="0" y1="160.5" x2="600" y2="160.5"></line>
+    {% for b in chart.bars %}<rect class="bar" x="{{ b.x }}" y="{{ b.y }}" width="{{ b.w }}" height="{{ b.h }}" rx="2"><title>{{ b.d.strftime('%b %-d') }}: {{ b.n }}</title></rect>{% endfor %}
+    {% for l in chart.labels %}<text x="{{ l.x }}" y="176" text-anchor="middle">{{ l.t }}</text>{% endfor %}
+  </svg>
+  <p class="small muted" style="margin:6px 0 0">Peak {{ chart.max if stats.total else 0 }} a day.{% if stats.bots %} {{ stats.bots }} hit{{ '' if stats.bots == 1 else 's' }} from link previews and bots aren't counted.{% endif %}</p>
+</div>
+<div class="grid2" style="margin-top:16px">
+  <div class="card"><b>Referrers</b>{% with rows=stats.referrers, empty='Direct / unknown', flagged=False %}{% include "_bars.html" %}{% endwith %}</div>
+  <div class="card"><b>Countries</b>{% with rows=stats.countries, empty='Unknown', flagged=True %}{% include "_bars.html" %}{% endwith %}</div>
+  <div class="card"><b>Devices</b>{% with rows=stats.devices, empty='Unknown', flagged=False %}{% include "_bars.html" %}{% endwith %}</div>
+  <div class="card"><b>Browsers</b>{% with rows=stats.browsers, empty='Unknown', flagged=False %}{% include "_bars.html" %}{% endwith %}</div>
+  <div class="card"><b>Operating systems</b>{% with rows=stats.oses, empty='Unknown', flagged=False %}{% include "_bars.html" %}{% endwith %}</div>
+  <div class="card qr">
+    <img src="/qr/{{ link.code }}.svg" alt="QR code">
+    <div><b>QR code</b><p class="small muted" style="margin:4px 0 10px">Points at {{ display_short(link.code) }}.</p>
+      <a class="btn small secondary" href="/qr/{{ link.code }}.png?download=1">Download PNG</a></div>
+  </div>
+</div>
+
+<h2>Edit</h2>
+<form class="card stack" method="post" action="/links/{{ link.code }}/edit">
+  <input type="hidden" name="csrf" value="{{ csrf }}">
+  <div><label for="url">Destination</label><input id="url" type="text" name="url" value="{{ link.url }}" required></div>
+  <div><label for="title">Title</label><input id="title" type="text" name="title" value="{{ link.title or '' }}" placeholder="Something to help you find it later"></div>
+  <div><button class="btn" type="submit">Save changes</button></div>
+</form>
+<div class="card toolbar" style="margin-top:16px">
+  <form method="post" action="/links/{{ link.code }}/toggle" style="flex:0">
+    <input type="hidden" name="csrf" value="{{ csrf }}">
+    <button class="btn ghost" type="submit">{{ 'Turn back on' if link.disabled_at else 'Turn off' }}</button>
+  </form>
+  <span class="small muted" style="flex:1">{{ 'Turned off: visitors see a “closed” page.' if link.disabled_at else 'Turning off pauses the redirect; you can turn it back on.' }}</span>
+  <form method="post" action="/links/{{ link.code }}/delete" style="flex:0" data-confirm="Delete {{ display_short(link.code) }} for good? The short link will stop working and can't be reused.">
+    <input type="hidden" name="csrf" value="{{ csrf }}">
+    <button class="btn danger" type="submit">Delete</button>
+  </form>
+</div>
+{% endblock %}

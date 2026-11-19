@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Privacy — Clams{% endblock %}
+{% block content %}
+<div class="prose">
+<h1>Privacy</h1>
+<p class="muted">Last updated November 19, 2026.</p>
+<h2>What we store</h2>
+<ul>
+  <li><b>Your account:</b> your email address, a securely hashed password if you set one, and which sign-in provider (Google or Apple) you use. From Google and Apple we receive only an account ID and your email address.</li>
+  <li><b>Your Clams:</b> the long URL, any title or custom name you add, and when it was made.</li>
+  <li><b>Clicks:</b> when a Clam is opened we record the time, the referring website's domain, an approximate country, the device type, browser and operating system. We do <b>not</b> store IP addresses. We keep a one-way, keyed hash so we can count unique visitors without knowing who they are.</li>
+</ul>
+<h2>Cookies</h2>
+<p>We use a sign-in cookie, a security cookie that protects forms, and (if you shorten links without an account) a cookie that lets you save those Clams to an account later. No advertising or tracking cookies, and no third-party analytics.</p>
+<h2>Sharing</h2>
+<p>We don't sell or share your data. Clam owners see aggregate stats for their own Clams. Anyone can see where a Clam points (that's how short links work).</p>
+<h2>The browser extension</h2>
+<p>The extension only reads the address and title of the tab you're on, and only when you click it. It sends them to cla.ms to make a Clam. It doesn't read page contents or your browsing history.</p>
+<h2>Deleting your data</h2>
+<p>You can delete any Clam, or your whole account, from your account page at any time.</p>
+<p class="small muted">Country lookup uses <a href="https://db-ip.com">IP Geolocation by DB-IP</a>.</p>
+</div>
+{% endblock %}

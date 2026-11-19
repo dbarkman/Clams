@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "Clams — URL Shortener",
+  "short_name": "Clams",
+  "version": "1.0.0",
+  "description": "Shorten the page you're on with cla.ms in one click. The short link is copied and ready to paste.",
+  "homepage_url": "https://cla.ms/extension",
+  "icons": { "16": "icons/icon-16.png", "32": "icons/icon-32.png", "48": "icons/icon-48.png", "128": "icons/icon-128.png" },
+  "action": {
+    "default_title": "Shorten with Clams",
+    "default_popup": "popup.html",
+    "default_icon": { "16": "icons/icon-16.png", "32": "icons/icon-32.png", "48": "icons/icon-48.png" }
+  },
+  "commands": {
+    "_execute_action": { "suggested_key": { "default": "Alt+Shift+C" }, "description": "Shorten this page" }
+  },
+  "permissions": ["activeTab", "storage", "clipboardWrite"],
+  "host_permissions": ["https://cla.ms/*"],
+  "content_scripts": [
+    { "matches": ["https://cla.ms/extension/connect*"], "js": ["connect.js"], "run_at": "document_start" }
+  ]
+}

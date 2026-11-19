@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Account — Clams{% endblock %}
+{% block content %}
+<h1>Account</h1>
+<div class="card stack">
+  <div><span class="muted small">Email</span><div><b>{{ user.email }}</b>{% if not user.email_verified %} <span class="small muted">(not confirmed)</span>{% endif %}</div></div>
+  {% if identities %}<div><span class="muted small">Sign-in</span><div>{% for i in identities %}{{ i.provider | capitalize }}{{ ', ' if not loop.last }}{% endfor %}{% if user.password_hash %}, password{% endif %}</div></div>{% endif %}
+  <div><a class="btn ghost small" href="/links/export.csv">Export my Clams (CSV)</a></div>
+</div>
+
+<h2>{{ 'Change password' if user.password_hash else 'Set a password' }}</h2>
+<form class="card stack" method="post" action="/account/password">
+  <input type="hidden" name="csrf" value="{{ csrf }}">
+  {% if user.password_hash %}<div><label for="current">Current password</label><input id="current" type="password" name="current" autocomplete="current-password" required></div>{% endif %}
+  <div><label for="password">New password <span class="muted">(8+ characters)</span></label><input id="password" type="password" name="password" autocomplete="new-password" minlength="8" required></div>
+  <div><button class="btn" type="submit">Save password</button></div>
+</form>
+
+<h2>Extensions &amp; API tokens</h2>
+<div class="card stack">
+  {% if new_token %}
+  <div class="flash">Your new token (shown once):<code class="token">{{ new_token }}</code></div>
+  {% endif %}
+  {% if tokens %}
+  <table class="simple">
+    <tr><th>Name</th><th>Created</th><th>Last used</th><th></th></tr>
+    {% for t in tokens %}
+    <tr><td>{{ t.label }}</td><td>{{ t.created_at.strftime('%b %-d, %Y') }}</td><td>{{ t.last_used_at.strftime('%b %-d, %Y') if t.last_used_at else '—' }}</td>
+      <td><form method="post" action="/account/tokens/{{ t.id }}/revoke" data-confirm="Remove access for {{ t.label }}?"><input type="hidden" name="csrf" value="{{ csrf }}"><button class="btn small danger" type="submit">Remove</button></form></td></tr>
+    {% endfor %}
+  </table>
+  {% else %}<p class="muted small" style="margin:0">Nothing connected yet. <a href="/extension">Get the browser extension</a>.</p>{% endif %}
+  <details>
+    <summary>Create an API token</summary>
+    <form class="toolbar" style="margin-top:10px" method="post" action="/account/tokens">
+      <input type="hidden" name="csrf" value="{{ csrf }}">
+      <input type="text" name="label" placeholder="What's it for?" style="flex:1;min-width:180px">
+      <button class="btn secondary" type="submit">Create token</button>
+    </form>
+    <p class="small muted">Use it as <code>Authorization: Bearer clm_…</code> with <code>POST {{ settings.base_url }}/api/v1/shorten</code> and a JSON body like <code>{"url": "https://example.com"}</code>.</p>
+  </details>
+</div>
+
+<h2>Delete account</h2>
+<form class="card stack danger-zone" method="post" action="/account/delete" data-confirm="Delete your account and all of its Clams? This can't be undone.">
+  <input type="hidden" name="csrf" value="{{ csrf }}">
+  <p class="small" style="margin:0">This deletes your account and turns off all of your Clams for good. Type your email to confirm.</p>
+  <input type="text" name="confirm" placeholder="{{ user.email }}" autocomplete="off">
+  <div><button class="btn danger" type="submit">Delete my account</button></div>
+</form>
+{% endblock %}

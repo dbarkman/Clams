@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Long links in, Clams out. 🐚</h1>
+<p class="lead">Paste a link and get a tiny one back — free, fast, and yours to keep.</p>
+<form class="card" method="post" action="/shorten">
+  <input type="hidden" name="csrf" value="{{ csrf }}">
+  <div class="shorten">
+    <input type="text" name="url" placeholder="Paste a long link…" autocomplete="off" autofocus required aria-label="Link to shorten">
+    <button class="btn" type="submit">Shorten</button>
+  </div>
+  {% if user %}
+  <div class="extra">
+    <div class="prefix"><span>{{ settings.short_host }}/</span><input type="text" name="alias" placeholder="custom-name (optional)" aria-label="Custom name"></div>
+    <input type="text" name="title" placeholder="Title (optional)" aria-label="Title">
+  </div>
+  {% else %}
+  <p class="small muted" style="margin:12px 0 0">No account needed. <a href="/signup">Create one</a> to edit your Clams later and see who clicks.</p>
+  {% endif %}
+</form>
+
+{% if user and recent %}
+<h2>Recent Clams</h2>
+<div class="card">
+  <ul class="list">
+  {% for l in recent %}
+    <li>
+      <div style="min-width:0">
+        <a class="code" href="/links/{{ l.code }}">{{ display_short(l.code) }}</a>{% if l.disabled_at %}<span class="pill">off</span>{% endif %}
+        {% if l.title %}<div class="title">{{ l.title }}</div>{% endif %}
+        <div class="url">{{ l.url }}</div>
+      </div>
+      <div class="meta"><span class="clicks">{{ l.click_count }}</span> clicks<br><button class="btn small secondary" data-copy="{{ short_url(l.code) }}">Copy</button></div>
+    </li>
+  {% endfor %}
+  </ul>
+  <p class="small" style="margin:12px 0 0"><a href="/links">See all your Clams →</a></p>
+</div>
+{% else %}
+<div class="features">
+  <div><b>📊 Click stats</b><p>See clicks over time, where they came from, and what devices people used.</p></div>
+  <div><b>✏️ Editable</b><p>Change where a Clam points anytime, or switch it off. Your short link stays the same.</p></div>
+  <div><b>🧩 One-click extension</b><p>Shorten the page you're on from Chrome or Safari. <a href="/extension">Get it</a></p></div>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,8 @@
+{% set total = rows | sum(attribute=1) %}
+{% if rows %}
+<ul class="bars">
+{% for k, n in rows %}
+  <li><i style="width:{{ (100 * n / total) | round(1) }}%"></i><span>{% if flagged %}{{ k | flag }} {% endif %}{{ k or empty }}</span><b>{{ n }}</b></li>
+{% endfor %}
+</ul>
+{% else %}<p class="muted small">No clicks yet.</p>{% endif %}

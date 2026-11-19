@@ -1,0 +1,5 @@
+{% if settings.google_enabled or settings.apple_enabled %}
+  {% if settings.apple_enabled %}<a class="btn provider" href="/auth/apple?next={{ quote(next or '/links') }}">Continue with Apple</a>{% endif %}
+  {% if settings.google_enabled %}<a class="btn provider" href="/auth/google?next={{ quote(next or '/links') }}"><b>G</b>&nbsp;Continue with Google</a>{% endif %}
+  <div class="or">or use email</div>
+{% endif %}

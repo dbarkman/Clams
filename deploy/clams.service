@@ -1,0 +1,15 @@
+[Unit]
+Description=Clams — cla.ms URL shortener
+After=network.target mariadb.service
+
+[Service]
+Type=simple
+User=apache
+Group=apache
+WorkingDirectory=/var/www/html/clams
+ExecStart=/var/www/html/clams/.venv/bin/uvicorn clams.app:app --host 127.0.0.1 --port 8012 --no-server-header --proxy-headers --forwarded-allow-ips 127.0.0.1
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

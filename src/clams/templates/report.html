@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Report a link — Clams{% endblock %}
+{% block content %}
+<div class="narrow">
+  <h1>Report a link</h1>
+  <p class="lead">Spotted a Clam used for phishing, malware or spam? Tell us and we'll take a look.</p>
+  <form class="card stack" method="post" action="/report">
+    <input type="hidden" name="csrf" value="{{ csrf }}">
+    <div><label for="code">The Clam</label><input id="code" type="text" name="code" value="{{ code }}" placeholder="cla.ms/aBc123" required></div>
+    <div><label for="reason">What's wrong?</label>
+      <select id="reason" name="reason">
+        <option value="phishing">Phishing / scam</option>
+        <option value="malware">Malware or virus</option>
+        <option value="spam">Spam</option>
+        <option value="illegal">Illegal content</option>
+        <option value="other">Something else</option>
+      </select></div>
+    <div><label for="details">Details <span class="muted">(optional)</span></label><textarea id="details" name="details" rows="3"></textarea></div>
+    <div><label for="email">Your email <span class="muted">(optional, if you'd like a reply)</span></label><input id="email" type="email" name="email"></div>
+    <button class="btn block" type="submit">Send report</button>
+  </form>
+</div>
+{% endblock %}

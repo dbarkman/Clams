@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Your Clam is ready — Clams{% endblock %}
+{% block content %}
+<h1>Your Clam is ready! 🎉</h1>
+<div class="card">
+  <div class="result">
+    <a class="short" href="{{ short_url(link.code) }}">{{ display_short(link.code) }}</a>
+    <button class="btn" data-copy="{{ short_url(link.code) }}">Copy</button>
+  </div>
+  <div class="dest">→ {{ link.url }}</div>
+  {% if not link.user_id %}
+  <div class="nudge">
+    <strong>Want to keep this one? 🐚</strong>
+    Your Clam works right now and will keep working. Create a free account and we'll save it for you,
+    so you can edit it or see who clicked later. Skip it and that's fine too — you just won't be able to change it down the road.
+    <div class="actions">
+      <a class="btn" href="/signup?next=/links">Create a free account</a>
+      <a class="btn ghost" href="/login?next=/links">I have an account</a>
+    </div>
+  </div>
+  {% endif %}
+</div>
+<div class="card qr">
+  <img src="/qr/{{ link.code }}.svg" alt="QR code for {{ display_short(link.code) }}">
+  <div>
+    <b>QR code</b>
+    <p class="small muted" style="margin:4px 0 10px">Scan it, print it, stick it on a flyer.</p>
+    <a class="btn small secondary" href="/qr/{{ link.code }}.png?download=1">Download PNG</a>
+  </div>
+</div>
+<p class="center"><a href="/">← Shorten another</a></p>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Reset password — Clams{% endblock %}
+{% block content %}
+<div class="narrow">
+  <h1>Forgot your password?</h1>
+  {% if settings.mail_enabled %}
+  <p class="lead">No worries. We'll email you a link to set a new one.</p>
+  <form class="card stack" method="post" action="/forgot">
+    <input type="hidden" name="csrf" value="{{ csrf }}">
+    <div><label for="email">Email</label><input id="email" type="email" name="email" autocomplete="email" required></div>
+    <button class="btn block" type="submit">Send reset link</button>
+  </form>
+  {% else %}
+  <p class="lead">Password reset emails aren't switched on yet.{% if settings.google_enabled or settings.apple_enabled %} If your account uses the same email as your Google or Apple account, you can sign in with that instead.{% endif %}</p>
+  <a class="btn" href="/login">Back to sign in</a>
+  {% endif %}
+</div>
+{% endblock %}

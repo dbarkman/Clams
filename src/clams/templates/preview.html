@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Where does {{ display_short(link.code) }} go? — Clams{% endblock %}
+{% block content %}
+<div class="narrow">
+  <h1>Where this Clam goes</h1>
+  <div class="card stack">
+    <div><span class="muted small">Short link</span><div class="code"><b>{{ display_short(link.code) }}</b></div></div>
+    {% if link.title %}<div><span class="muted small">Title</span><div>{{ link.title }}</div></div>{% endif %}
+    <div><span class="muted small">Takes you to</span><div class="dest" style="color:var(--ink)">{{ link.url }}</div></div>
+    <a class="btn block" href="{{ link.url }}" rel="noopener noreferrer nofollow">Continue to {{ link.url.split('/')[2] }}</a>
+  </div>
+  <p class="small muted center">Looks fishy? <a href="/report?code={{ link.code }}">Report it</a>.</p>
+</div>
+{% endblock %}

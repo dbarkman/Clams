@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Browser extension — Clams{% endblock %}
+{% block content %}
+<h1>Shorten any page in one click</h1>
+<p class="lead">Click the 🐚 in your toolbar and the page you're on becomes a Clam, copied and ready to paste.</p>
+<div class="grid2">
+  <div class="card stack">
+    <b>Chrome (and Edge, Brave, Arc)</b>
+    <p class="small muted" style="margin:0">Coming soon to the Chrome Web Store. Until then:</p>
+    <ol class="small" style="margin:0;padding-left:18px">
+      <li><a href="/static/clams-extension.zip">Download the extension</a> and unzip it.</li>
+      <li>Open <code>chrome://extensions</code> and switch on <b>Developer mode</b>.</li>
+      <li>Click <b>Load unpacked</b> and pick the unzipped folder.</li>
+      <li>Pin 🐚 Clams to your toolbar.</li>
+    </ol>
+  </div>
+  <div class="card stack">
+    <b>Safari (Mac, iPhone, iPad)</b>
+    <p class="small muted" style="margin:0">Coming soon to the App Store. Safari extensions ship inside an app, so it'll arrive as a tiny Clams app with the extension built in.</p>
+  </div>
+</div>
+<div class="card" style="margin-top:16px">
+  <b>Signed in or not, it just works.</b>
+  <p class="small muted" style="margin:6px 0 0">Without an account your Clams work forever but can't be changed later. Connect your account from the extension and the Clams you make are saved here, with stats — including the ones you made before connecting.</p>
+</div>
+{% endblock %}

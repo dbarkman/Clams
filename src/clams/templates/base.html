@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Clams — short links, no fuss{% endblock %}</title>
+  <meta name="description" content="Clams is a free, friendly URL shortener at cla.ms. Shorten a link, share it, see who clicks.">
+  <meta name="csrf-token" content="{{ csrf }}">
+  <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/static/icon-180.png">
+  <link rel="stylesheet" href="/static/style.css?v=1">
+  <meta name="theme-color" content="#0f8b8d">
+  {% block head %}{% endblock %}
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/"><img src="/static/favicon.svg" alt="">Clams <small>cla.ms</small></a>
+    <nav class="main">
+      {% if user %}
+        <a href="/links">My Clams</a>
+        <a href="/account">Account</a>
+        {% if user.is_admin %}<a href="/admin">Admin</a>{% endif %}
+        <form method="post" action="/logout"><input type="hidden" name="csrf" value="{{ csrf }}"><button class="link" type="submit">Sign out</button></form>
+      {% else %}
+        <a href="/extension">Extension</a>
+        <a href="/login">Sign in</a>
+        <a class="btn small" href="/signup">Create account</a>
+      {% endif %}
+    </nav>
+  </div>
+</header>
+<main>
+  <div class="wrap">
+    {% if flash %}<div class="flash {{ 'err' if flash.k == 'err' else '' }}">{{ flash.m }}</div>{% endif %}
+    {% block content %}{% endblock %}
+  </div>
+</main>
+<footer class="bottom">
+  <div class="wrap">
+    <span>🐚 Clams</span>
+    <a href="/about">About</a>
+    <a href="/extension">Browser extension</a>
+    <a href="/report">Report a link</a>
+    <a href="/privacy">Privacy</a>
+    <a href="/terms">Terms</a>
+  </div>
+</footer>
+<script src="/static/app.js?v=1"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

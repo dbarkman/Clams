@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} — Clams{% endblock %}
+{% block content %}
+<div class="narrow center">
+  <div class="big-emoji">{{ emoji }}</div>
+  <h1>{{ title }}</h1>
+  <p class="lead">{{ body }}</p>
+  <a class="btn" href="/">Go to cla.ms</a>
+</div>
+{% endblock %}

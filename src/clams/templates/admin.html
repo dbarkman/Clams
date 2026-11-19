@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Admin — Clams{% endblock %}
+{% block content %}
+<h1>Admin</h1>
+<h2>Look up a Clam</h2>
+<form class="card toolbar" method="get" action="/admin">
+  <input type="text" name="code" value="{{ code }}" placeholder="code or cla.ms link" style="flex:1">
+  <button class="btn secondary" type="submit">Find</button>
+</form>
+{% if found %}
+<div class="card stack" style="margin-top:12px">
+  <div><b>{{ display_short(found.code) }}</b>{% if found.disabled_at %}<span class="pill">off: {{ found.disabled_reason }}</span>{% endif %}{% if found.deleted_at %}<span class="pill">deleted</span>{% endif %}</div>
+  <div class="dest">→ {{ found.url }}</div>
+  <div class="small muted">Owner: {{ 'account #' ~ found.user_id if found.user_id else 'anonymous' }} · {{ found.click_count }} clicks · made {{ found.created_at }} via {{ found.source }}</div>
+  <form method="post" action="/admin/links/{{ found.code }}/toggle"><input type="hidden" name="csrf" value="{{ csrf }}"><button class="btn {{ 'secondary' if found.disabled_at else 'danger' }}" type="submit">{{ 'Turn on' if found.disabled_at else 'Turn off' }}</button></form>
+</div>
+{% elif code %}<p class="muted">No Clam with that code.</p>{% endif %}
+
+<h2>Open reports ({{ reports | length }})</h2>
+<div class="card">
+  {% if reports %}
+  <table class="simple">
+  {% for r in reports %}
+    <tr>
+      <td><a href="/admin?code={{ r.code }}"><b>{{ r.code }}</b></a><br><span class="small muted">{{ r.created_at }}</span></td>
+      <td><b>{{ r.reason }}</b>{% if r.link %}<div class="dest">→ {{ r.link.url }}</div>{% endif %}{% if r.details %}<div class="small">{{ r.details }}</div>{% endif %}{% if r.reporter_email %}<div class="small muted">from {{ r.reporter_email }}</div>{% endif %}</td>
+      <td><form method="post" action="/admin/reports/{{ r.id }}/resolve"><input type="hidden" name="csrf" value="{{ csrf }}">
+        <select name="resolution"><option value="actioned">Actioned</option><option value="dismissed">Dismissed</option></select>
+        <button class="btn small secondary" type="submit">Close</button></form></td>
+    </tr>
+  {% endfor %}
+  </table>
+  {% else %}<p class="muted" style="margin:0">Nothing to review. 🌴</p>{% endif %}
+</div>
+
+<h2>Blocked domains</h2>
+<form class="card toolbar" method="post" action="/admin/block">
+  <input type="hidden" name="csrf" value="{{ csrf }}">
+  <input type="text" name="domain" placeholder="bad-site.example" style="flex:1;min-width:160px">
+  <input type="text" name="reason" placeholder="reason" style="flex:1;min-width:160px">
+  <button class="btn danger" type="submit">Block + turn off its Clams</button>
+</form>
+{% if blocked %}
+<div class="card" style="margin-top:12px"><table class="simple">
+  {% for b in blocked %}<tr><td>{{ b.domain }}</td><td class="muted">{{ b.reason or '' }}</td><td>
+    <form method="post" action="/admin/unblock"><input type="hidden" name="csrf" value="{{ csrf }}"><input type="hidden" name="domain" value="{{ b.domain }}"><button class="btn small ghost" type="submit">Unblock</button></form></td></tr>{% endfor %}
+</table></div>
+{% endif %}
+{% endblock %}

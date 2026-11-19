@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}My Clams — Clams{% endblock %}
+{% block content %}
+<h1>My Clams</h1>
+<p class="lead">{{ total }} Clam{{ '' if total == 1 else 's' }}{% if q %} matching “{{ q }}”{% endif %}.</p>
+<div class="toolbar">
+  <form method="get" action="/links">
+    <input type="search" name="q" value="{{ q }}" placeholder="Search links, titles, codes…" aria-label="Search">
+    <button class="btn secondary" type="submit">Search</button>
+  </form>
+  <a class="btn" href="/">+ New Clam</a>
+  <a class="btn ghost" href="/links/export.csv">Export CSV</a>
+</div>
+<div class="card">
+  {% if links %}
+  <ul class="list">
+  {% for l in links %}
+    <li>
+      <div style="min-width:0">
+        <a class="code" href="/links/{{ l.code }}">{{ display_short(l.code) }}</a>{% if l.disabled_at %}<span class="pill">off</span>{% endif %}
+        {% if l.title %}<div class="title">{{ l.title }}</div>{% endif %}
+        <div class="url">{{ l.url }}</div>
+        <div class="small muted">{{ l.created_at.strftime('%b %-d, %Y') }}</div>
+      </div>
+      <div class="meta"><span class="clicks">{{ l.click_count }}</span> click{{ '' if l.click_count == 1 else 's' }}<br>
+        <button class="btn small secondary" data-copy="{{ short_url(l.code) }}">Copy</button></div>
+    </li>
+  {% endfor %}
+  </ul>
+  {% else %}
+  <p class="muted">{% if q %}Nothing matches that search.{% else %}No Clams yet. <a href="/">Make your first one →</a>{% endif %}</p>
+  {% endif %}
+</div>
+{% if pages > 1 %}
+<div class="pager">
+  {% if page > 1 %}<a class="btn ghost small" href="/links?page={{ page - 1 }}&q={{ quote(q) }}">← Newer</a>{% endif %}
+  <span class="muted small">Page {{ page }} of {{ pages }}</span>
+  {% if page < pages %}<a class="btn ghost small" href="/links?page={{ page + 1 }}&q={{ quote(q) }}">Older →</a>{% endif %}
+</div>
+{% endif %}
+{% endblock %}
